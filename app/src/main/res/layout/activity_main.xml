@@ -1,42 +1,32 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        app:title="Monaco Editor"
-        app:titleCentered="true" />
-
-    <!-- Progress Bar -->
+    <!-- Progress Bar (shows when WebView is loading) -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="5dp"
+        android:indeterminate="true"
         android:visibility="gone" />
 
-    <!-- Monaco WebView -->
+    <!-- WebView for Monaco Editor -->
     <WebView
-        android:id="@+id/editorWebView"
+        android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never"
-        android:background="@android:color/black" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/progressBar" />
 
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button (Save/Run later) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_save"
-        app:layout_anchor="@id/editorWebView"
-        app:layout_anchorGravity="bottom|end" />
-</LinearLayout>
+        android:src="@android:drawable/ic_menu_save" />
+
+</RelativeLayout>

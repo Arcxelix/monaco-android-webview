@@ -1,18 +1,14 @@
-package com.example.monacoembed
+package com.example.yourapp  // 👈 make sure this matches your app’s package name
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.io.File
-import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,45 +21,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Find views from XML
+        // Connect XML views
         webView = findViewById(R.id.webView)
         progressBar = findViewById(R.id.progressBar)
         fab = findViewById(R.id.fab)
 
-        // Setup WebView
-        val webSettings: WebSettings = webView.settings
-        webSettings.javaScriptEnabled = true
-        webSettings.domStorageEnabled = true
-
+        // WebView settings
+        webView.settings.javaScriptEnabled = true
+        webView.webChromeClient = WebChromeClient()
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
-                progressBar.visibility = View.GONE // Hide when done loading
+                progressBar.visibility = View.GONE
             }
         }
-        webView.webChromeClient = WebChromeClient()
 
-        // Load Monaco Editor (index.html inside assets/www)
-        webView.loadUrl("file:///android_asset/www/index.html")
+        // Load Monaco editor (you can change this URL later)
+        webView.loadUrl("https://microsoft.github.io/monaco-editor/")
 
-        // FAB click → Save editor content to a file
+        // FAB action (for now, reload page)
         fab.setOnClickListener {
-            webView.evaluateJavascript("editor.getValue();") { code ->
-                saveCodeToFile(code)
-            }
-        }
-    }
-
-    private fun saveCodeToFile(code: String) {
-        try {
-            val cleanCode = code.trim('"') // Remove quotes from JS result
-            val file = File(getExternalFilesDir(null), "saved_code.txt")
-            val fos = FileOutputStream(file)
-            fos.write(cleanCode.toByteArray())
-            fos.close()
-
-            Toast.makeText(this, "Code saved to: ${file.absolutePath}", Toast.LENGTH_LONG).show()
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error saving file: ${e.message}", Toast.LENGTH_LONG).show()
+            webView.reload()
         }
     }
 }
+
